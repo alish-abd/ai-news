@@ -77,7 +77,7 @@ def edit_image():
     try:
         image_url = request.form.get("image_url")
         title = request.form.get("title", "Your Title").strip()
-        description = request.form.get("description", "Your description here.").strip()
+        description = request.form.get("description", "").strip()
         logo_url = request.form.get("logo_url", DEFAULT_LOGO_URL)
         logo_position = request.form.get("logo_position", "top_left").strip()
 
