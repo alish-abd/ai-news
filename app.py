@@ -16,7 +16,7 @@ DEFAULT_LOGO_URL = "https://i.postimg.cc/qvSxKn5t/news.png"
 TITLE_FONT_PATH = "InterTight-Medium.ttf"
 DESC_FONT_PATH = "InterTight-Regular.ttf"
 
-TITLE_FONT_SIZE = 78
+TITLE_FONT_SIZE = 88
 DESC_FONT_SIZE = 40
 
 SIDE_PADDING = 80
@@ -138,16 +138,24 @@ def edit_image():
         base_text_height_with_logo = base_text_height + extra_space
 
         # Градиент
+        # Градиент по ключевым точкам: 0% → 0, 49% → 75%, 100% → 100%
         total_gradient_height = int(img.height * GRADIENT_HEIGHT_RATIO)
         gradient_img = Image.new('L', (1, total_gradient_height), color=0xFF)
+        
         for y in range(total_gradient_height):
-            opacity = int(GRADIENT_OPACITY * (y / total_gradient_height))
-            gradient_img.putpixel((0, y), min(opacity, 255))
+            percent = y / total_gradient_height
+            if percent <= 0.49:
+                opacity = int((percent / 0.49) * (0.75 * 255))  # from 0 to 75%
+            else:
+                opacity = int(0.75 * 255 + ((percent - 0.49) / (1 - 0.49)) * (0.25 * 255))  # from 75% to 100%
+            gradient_img.putpixel((0, y), min(255, opacity))
+        
         gradient_alpha = gradient_img.resize((img.width, total_gradient_height))
         gradient_overlay = Image.new("RGBA", (img.width, total_gradient_height), (0, 0, 0, 0))
         gradient_overlay.putalpha(gradient_alpha)
         gradient_start_y = img.height - total_gradient_height
         img.paste(gradient_overlay, (0, gradient_start_y), gradient_overlay)
+
 
         # Текст
         text_start_y = img.height - base_text_height_with_logo - BOTTOM_PADDING
