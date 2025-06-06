@@ -11,7 +11,7 @@ app = Flask(__name__)
 # НАСТРОЙКИ (можно менять)
 ###############################################
 
-DEFAULT_LOGO_URL = "https://ai.ls/assets/openai-logos/PNGs/openai-white-lockup.png"
+DEFAULT_LOGO_URL = "https://i.postimg.cc/qvSxKn5t/news.png"
 
 TITLE_FONT_PATH = "InterTight-Regular.ttf"
 DESC_FONT_PATH = "InterTight-Regular.ttf"
