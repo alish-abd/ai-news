@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 DEFAULT_LOGO_URL = "https://i.postimg.cc/qvSxKn5t/news.png"
 
-TITLE_FONT_PATH = "InterTight-Regular.ttf"
+TITLE_FONT_PATH = "InterTight-Medium.ttf"
 DESC_FONT_PATH = "InterTight-Regular.ttf"
 
 TITLE_FONT_SIZE = 78
@@ -91,15 +91,18 @@ def edit_image():
             return jsonify({"error": "Image required (via image_file or image_url)"}), 400
 
         # Центрированный кроп
+       
+        TARGET_WIDTH = 1080
+        TARGET_HEIGHT = 1350
         width, height = img.size
-        new_size = 1080
-        if width < new_size or height < new_size:
-            scale = max(new_size / width, new_size / height)
-            img = img.resize((int(width * scale), int(height * scale)), Image.LANCZOS)
-            width, height = img.size
-        left = (width - new_size) // 2
-        top = (height - new_size) // 2
-        img = img.crop((left, top, left + new_size, top + new_size))
+        scale = max(TARGET_WIDTH / width, TARGET_HEIGHT / height)
+        resized_width = int(width * scale)
+        resized_height = int(height * scale)
+        img = img.resize((resized_width, resized_height), Image.LANCZOS)
+        
+        left = (resized_width - TARGET_WIDTH) // 2
+        top = (resized_height - TARGET_HEIGHT) // 2
+        img = img.crop((left, top, left + TARGET_WIDTH, top + TARGET_HEIGHT))
 
         # Лого
         logo_file = request.files.get("logo_file")
@@ -151,7 +154,7 @@ def edit_image():
         y = text_start_y
         for line in title_lines:
             draw.text((SIDE_PADDING, y), line, font=title_font, fill=(255, 255, 255, 255))
-            y += title_height
+            y += int(title_height * 0.85)
         if description:
             y += 20
             for line in desc_lines:
