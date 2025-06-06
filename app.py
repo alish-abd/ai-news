@@ -125,7 +125,10 @@ def edit_image():
 
         title_height = draw.textbbox((0, 0), "Ay", font=title_font)[3]
         desc_height = draw.textbbox((0, 0), "Ay", font=desc_font)[3]
-        base_text_height = title_height * len(title_lines) + desc_height * len(desc_lines) + 20
+        if description:
+            base_text_height = title_height * len(title_lines) + desc_height * len(desc_lines) + 20
+        else:
+            base_text_height = title_height * len(title_lines)
 
         # Если логотип под текстом — добавляем extra_space
         extra_space = LOGO_TEXT_SPACING + logo.height if logo_position == "below_text" else 0
@@ -149,10 +152,12 @@ def edit_image():
         for line in title_lines:
             draw.text((SIDE_PADDING, y), line, font=title_font, fill=(255, 255, 255, 255))
             y += title_height
-        y += 20
-        for line in desc_lines:
-            draw.text((SIDE_PADDING, y), line, font=desc_font, fill=(255, 255, 255, 255))
-            y += desc_height
+        if description:
+            y += 20
+            for line in desc_lines:
+                draw.text((SIDE_PADDING, y), line, font=desc_font, fill=(255, 255, 255, 255))
+                y += desc_height
+
 
         # Логотип (после текста)
         logo_x, logo_y = calculate_logo_position(logo_position, img, logo, text_start_y, y)
