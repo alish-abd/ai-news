@@ -158,7 +158,8 @@ def edit_image():
 
 
         # Текст
-        text_start_y = img.height - base_text_height_with_logo - BOTTOM_PADDING
+        text_start_y = img.height - base_text_height_with_logo - BOTTOM_PADDING + 40
+
         y = text_start_y
         for line in title_lines:
             draw.text((SIDE_PADDING, y), line, font=title_font, fill=(255, 255, 255, 255))
